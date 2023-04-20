@@ -17,10 +17,25 @@ export class TenableService {
     });
   }
 
-  async getScanResults(host: string, apiKey: string, apiSecret: string) {
+  async getScanResults(
+    host: string,
+    apiKey: string,
+    apiSecret: string,
+    startTime?: string,
+    endTime?: string,
+  ) {
     try {
+      const params: any = {};
+      if (startTime) {
+        params.startTime = new Date(startTime).getTime() / 1000;
+      }
+      if (endTime) {
+        params.endTime = new Date(endTime).getTime() / 1000;
+      }
+
       const response = await this.getApiClient(host, apiKey, apiSecret).get(
         '/rest/scanResult',
+        { params },
       );
       return response.data;
     } catch (error) {

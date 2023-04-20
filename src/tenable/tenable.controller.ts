@@ -15,11 +15,17 @@ export class TenableController {
 
   @Get('scan-results')
   @UsePipes(new ValidationPipe({ transform: true }))
-  async getScanResults(@Query() credentials: TenableCredentialsDto) {
+  async getScanResults(
+    @Query() credentials: TenableCredentialsDto,
+    @Query('startTime') startTime?: string,
+    @Query('endTime') endTime?: string,
+  ) {
     return this.tenableService.getScanResults(
       credentials.host,
       credentials.apiKey,
       credentials.apiSecret,
+      startTime,
+      endTime,
     );
   }
 
