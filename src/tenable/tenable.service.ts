@@ -1,9 +1,9 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, HttpException } from '@nestjs/common';
 import axios, { AxiosInstance } from 'axios';
 
 @Injectable()
 export class TenableService {
-  private getClient(
+  private getApiClient(
     host: string,
     apiKey: string,
     apiSecret: string,
@@ -18,9 +18,14 @@ export class TenableService {
   }
 
   async getScanResults(host: string, apiKey: string, apiSecret: string) {
-    const client = this.getClient(host, apiKey, apiSecret);
-    const response = await client.get('/rest/scanResult');
-    return response.data;
+    try {
+      const response = await this.getApiClient(host, apiKey, apiSecret).get(
+        '/rest/scanResult',
+      );
+      return response.data;
+    } catch (error) {
+      throw new HttpException(error.response.data, error.response.status);
+    }
   }
 
   async getScanResult(
@@ -29,9 +34,14 @@ export class TenableService {
     apiSecret: string,
     resultId: string,
   ) {
-    const client = this.getClient(host, apiKey, apiSecret);
-    const response = await client.get(`/rest/scanResult/${resultId}`);
-    return response.data;
+    try {
+      const response = await this.getApiClient(host, apiKey, apiSecret).get(
+        `/rest/scanResult/${resultId}`,
+      );
+      return response.data;
+    } catch (error) {
+      throw new HttpException(error.response.data, error.response.status);
+    }
   }
 
   async getVulnerabilities(
@@ -40,22 +50,28 @@ export class TenableService {
     apiSecret: string,
     resultId: string,
   ) {
-    const client = this.getClient(host, apiKey, apiSecret);
-    const payload = {
-      type: 'vuln',
-      sourceType: 'individual',
-      scanID: resultId,
-      sortField: 'severity',
-      sortDir: 'desc',
-      view: 'all',
-      query: {
-        tool: 'vulndetails',
+    try {
+      const payload = {
         type: 'vuln',
-        startOffset: 0,
-        endOffset: 9999,
-      },
-    };
-    const response = await client.post('/rest/analysis', payload);
-    return response.data;
+        sourceType: 'individual',
+        scanID: resultId,
+        sortField: 'severity',
+        sortDir: 'desc',
+        view: 'all',
+        query: {
+          tool: 'vulndetails',
+          type: 'vuln',
+          startOffset: 0,
+          endOffset: 9999,
+        },
+      };
+      const response = await this.getApiClient(host, apiKey, apiSecret).post(
+        `/rest/analysis`,
+        payload,
+      );
+      return response.data;
+    } catch (error) {
+      throw new HttpException(error.response.data, error.response.status);
+    }
   }
 }
