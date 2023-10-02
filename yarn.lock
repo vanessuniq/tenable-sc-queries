@@ -760,11 +760,11 @@
     pluralize "8.0.0"
 
 "@nestjs/testing@^9.0.0":
-  version "9.4.0"
-  resolved "https://registry.yarnpkg.com/@nestjs/testing/-/testing-9.4.0.tgz#1e5d1e799413e996c9c2da02a89dfefa62c3b70e"
-  integrity sha512-xZWp363P4otcebg++gSjUcdCfTK0RorORzyFq3aLaSAQOlq8kxfFDRIKzEATR4aOUfqTMMsAA8lhnMJWf35N6A==
+  version "9.4.3"
+  resolved "https://registry.yarnpkg.com/@nestjs/testing/-/testing-9.4.3.tgz#53ffbabdd38f500b145c30f2fbb76dedad393d79"
+  integrity sha512-LDT8Ai2eKnTzvnPaJwWOK03qTaFap5uHHsJCv6dL0uKWk6hyF9jms8DjyVaGsaujCaXDG8izl1mDEER0OmxaZA==
   dependencies:
-    tslib "2.5.0"
+    tslib "2.5.3"
 
 "@nodelib/fs.scandir@2.1.5":
   version "2.1.5"
